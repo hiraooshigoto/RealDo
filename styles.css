@@ -1,0 +1,1601 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    overflow-x: hidden;
+    scrollbar-width: none; /* Firefox用 */
+    -ms-overflow-style: none; /* IE用 */
+    height: 100%;
+}
+
+/* Chromeなどのスクロールバー非表示 */
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+    display: none;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    color: white;
+    transition: background-color 0.5s ease;
+    padding: 0;
+    background-image: url('assets/images/back.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-blend-mode: overlay;
+}
+
+/* ステージごとのテーマカラー用のクラス */
+/* ステージごとのテーマカラー用のクラス */
+body.stage-0 { background-color: #808080; }  /* チュートリアル: 灰色 */
+
+/* 1-3: 赤黒系 */
+body.stage-1 { background-color: #8B0000; }
+body.stage-2 { background-color: #800000; }
+body.stage-3 { background-color: #8B1A1A; }
+
+/* 4-6: オレンジ系 */
+body.stage-4 { background-color: #D35400; }
+body.stage-5 { background-color: #BA4A00; }
+body.stage-6 { background-color: #A04000; }
+
+/* 7-9: 暗い黄色系 */
+body.stage-7 { background-color: #7c6818; }
+body.stage-8 { background-color: #947d21; }
+body.stage-9 { background-color: #917a1d; }
+
+/* 10-12: 緑系 */
+body.stage-10 { background-color: #186A3B; }
+body.stage-11 { background-color: #145A32; }
+body.stage-12 { background-color: #0B5345; }
+
+/* 13-15: 青系 */
+body.stage-13 { background-color: #1F618D; }
+body.stage-14 { background-color: #1A5276; }
+body.stage-15 { background-color: #154360; }
+
+/* 16-18: 藍色系 */
+body.stage-16 { background-color: #1A237E; }
+body.stage-17 { background-color: #151965; }
+body.stage-18 { background-color: #10174C; }
+
+/* 19-21: 紫色系 */
+body.stage-19 { background-color: #4A235A; }
+body.stage-20 { background-color: #3E1F4A; }
+body.stage-21 { background-color: #321B3B; }
+
+/* 22: 黒 */
+body.stage-22 { background-color: #000000; }
+
+/* 23: エンディング */
+body.stage-23 { background-color: #5D4037; }
+
+.container {
+    width: 100%;
+    max-width: 800px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.problem-area {
+    width: 100%;
+    aspect-ratio: 1;
+    background-color: #f0f0f0;
+    border-radius: 10px;
+    margin: 10px auto;
+    position: relative;
+    overflow: hidden;
+    color: #333;
+    max-width: min(65vh, 800px);
+    max-height: min(65vh, 800px);
+    flex-shrink: 0;
+}
+
+/* 結果ボックスのスタイル */
+.result-box {
+    position: absolute;
+    right: 10%;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    width: 260px;
+    height: 110px;
+    min-height: 110px;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    overflow: hidden;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.result-box::before {
+    display: none;
+}
+
+.result-box::after {
+    display: none;
+}
+
+.result-box-content {
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#stageResults {
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    font-size: 42px;
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: 0;
+    color: white;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    line-height: 1;
+    position: relative;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+}
+
+/* 結果文字のコンテナ */
+.result-char-container {
+    display: flex;
+    justify-content: center; 
+    width: 100%;
+    border: 1px solid transparent;
+    background: transparent;
+    table-layout: fixed;
+}
+
+/* 個別の文字ボックス */
+.result-char-box {
+    display: inline-block;
+    width: 50px;
+    height: 60px;
+    text-align: center;
+    border: 1px solid transparent;
+    background: transparent;
+    line-height: 60px;
+    vertical-align: middle;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+}
+
+/* ステージ7で結果ボックスを表示 */
+body.stage-7 .result-box {
+    display: flex;
+    animation: fade-in 0.5s ease-out forwards;
+}
+
+@keyframes fade-in {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@media (max-width: 1200px) {
+    .result-box {
+        position: relative;
+        right: auto;
+        top: auto;
+        transform: none;
+        width: 100%;
+        max-width: min(65vh, 800px);
+        height: 100px;
+        margin: 15px auto;
+        background: transparent;
+        box-shadow: none;
+        border-radius: 0;
+        animation: fade-in 0.5s ease both;
+    }
+    
+    @keyframes slide-in-bottom {
+        0% {
+            transform: translateY(20px);
+            opacity: 0;
+        }
+        100% {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+    
+    body.stage-7 .result-box {
+        animation: fade-in 0.5s ease both;
+    }
+}
+
+.puzzle-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+}
+
+.problem-element {
+    position: absolute;
+    transform-origin: center center;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.problem-element img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.problem-element.dynamic-text-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    transform: translate(-50%, -50%);
+}
+
+.dynamic-text-char {
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    text-align: center;
+    line-height: 1;
+    display: inline-block;
+}
+
+.number-text-word {
+    line-height: 1;
+    white-space: nowrap;
+    transform: translate(-50%, -50%);
+}
+
+.number-text-char {
+    transition: all 0.2s ease;
+}
+
+.title-area {
+    margin: 5px 0;
+    width: 100%;
+    max-width: 800px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.title-area h2 {
+    font-size: 24px;
+    margin-bottom: 5px;
+}
+
+.title-area p {
+    color: #ccc;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 20px;
+    background-color: transparent;
+    border-radius: 2px;
+    margin-bottom: 10px;
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    touch-action: none;
+}
+
+.progress-track {
+    width: 100%;
+    height: 4px;
+    background-color: #4a4a4a;
+    border-radius: 2px;
+    position: relative;
+}
+
+.progress {
+    position: absolute;
+    height: 100%;
+    background-color: white;
+    border-radius: 2px;
+    width: 0%;
+    transition: width 0.1s linear;
+}
+
+.progress-knob {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background-color: white;
+    border-radius: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    left: 0%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    transition: transform 0.1s ease;
+}
+
+.progress-knob:active {
+    transform: translate(-50%, -50%) scale(1.2);
+}
+
+.time-display {
+    display: flex;
+    justify-content: space-between;
+    color: #ccc;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+.controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 32px;
+    margin: 5px 0;
+    width: 100%;
+    max-width: 800px;
+    flex-shrink: 0;
+}
+
+.control-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.control-button img {
+    width: 78px;
+    height: 78px;
+}
+
+.play-pause img {
+    width: 82px;
+    height: 82px;
+}
+
+.answer-area {
+    display: none;
+}
+
+@keyframes shakeAnimation {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+.shake {
+    animation: shakeAnimation 0.2s ease-in-out;
+}
+
+/* リズムドットコンテナ - 複数ラインを含む */
+#rhythmDots {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 130%;
+    max-width: 780px;
+    margin: 0 auto;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+/* リズムドット行 */
+.rhythm-dots {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 26px;
+    width: 100%;
+    padding: 10px;
+    border-radius: 15px;
+    background-color: transparent;
+}
+
+/* 基本的なドットスタイル - 非選択（非アクティブ） */
+.rhythm-dot {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    opacity: 0.7;
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
+                opacity 0.2s ease,
+                background-color 0.2s ease;
+    background-color: #333;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* 各ライン別の基本色（非選択） */
+.rhythm-dots[data-line-index="0"] .rhythm-dot {
+    background-color: rgba(100, 20, 20, 0.7);
+}
+.rhythm-dots[data-line-index="1"] .rhythm-dot {
+    background-color: rgba(20, 20, 100, 0.7);
+}
+.rhythm-dots[data-line-index="2"] .rhythm-dot {
+    background-color: rgba(20, 80, 20, 0.7);
+}
+.rhythm-dots[data-line-index="3"] .rhythm-dot {
+    background-color: rgba(100, 100, 20, 0.7);
+}
+.rhythm-dots[data-line-index="4"] .rhythm-dot {
+    background-color: rgba(100, 20, 100, 0.7);
+}
+.rhythm-dots[data-line-index="5"] .rhythm-dot {
+    background-color: rgba(20, 100, 100, 0.7);
+}
+.rhythm-dots[data-line-index="6"] .rhythm-dot {
+    background-color: rgba(150, 80, 20, 0.7);
+}
+.rhythm-dots[data-line-index="7"] .rhythm-dot {
+    background-color: rgba(80, 120, 20, 0.7);
+}
+
+/* アクティブ状態（押下時） */
+.rhythm-dot.active {
+    transform: scale(1.4);
+    opacity: 0.9;
+}
+
+/* 選択状態（ボタンを確定したとき） */
+.rhythm-dot.selected {
+    transform: scale(1.6) !important;
+    opacity: 1 !important;
+    z-index: 10;
+    border: 3px solid white;
+    box-shadow: 0 0 15px rgba(255, 85, 85, 0.8);
+}
+
+/* 各ライン別の選択状態の発光アニメーション */
+.rhythm-dots[data-line-index="0"] .rhythm-dot.selected {
+    background-color: rgb(255, 30, 30) !important;
+    box-shadow: 0 0 20px rgba(255, 30, 30, 1) !important;
+    border: 3px solid rgb(255, 150, 150) !important;
+    animation: pulse-active-red 0.3s infinite alternate !important;
+}
+
+.rhythm-dots[data-line-index="1"] .rhythm-dot.selected {
+    background-color: rgb(30, 30, 255) !important;
+    box-shadow: 0 0 20px rgba(30, 30, 255, 1) !important;
+    border: 3px solid rgb(150, 150, 255) !important;
+    animation: pulse-active-blue 0.3s infinite alternate !important;
+}
+
+.rhythm-dots[data-line-index="2"] .rhythm-dot.selected {
+    background-color: rgb(30, 180, 30) !important;
+    box-shadow: 0 0 20px rgba(30, 180, 30, 1) !important;
+    border: 3px solid rgb(150, 255, 150) !important;
+    animation: pulse-active-green 0.3s infinite alternate !important;
+}
+
+.rhythm-dots[data-line-index="3"] .rhythm-dot.selected {
+    background-color: rgb(255, 255, 30) !important;
+    box-shadow: 0 0 20px rgba(255, 255, 30, 1) !important;
+    border: 3px solid rgb(255, 255, 150) !important;
+    animation: pulse-active-yellow 0.3s infinite alternate !important;
+}
+
+.rhythm-dots[data-line-index="4"] .rhythm-dot.selected {
+    background-color: rgb(255, 30, 255) !important;
+    box-shadow: 0 0 20px rgba(255, 30, 255, 1) !important;
+    border: 3px solid rgb(255, 150, 255) !important;
+    animation: pulse-active-purple 0.3s infinite alternate !important;
+}
+
+.rhythm-dots[data-line-index="5"] .rhythm-dot.selected {
+    background-color: rgb(30, 255, 255) !important;
+    box-shadow: 0 0 20px rgba(30, 255, 255, 1) !important;
+    border: 3px solid rgb(150, 255, 255) !important;
+    animation: pulse-active-cyan 0.3s infinite alternate !important;
+}
+
+.rhythm-dots[data-line-index="6"] .rhythm-dot.selected {
+    background-color: rgb(255, 120, 30) !important;
+    box-shadow: 0 0 20px rgba(255, 120, 30, 1) !important;
+    border: 3px solid rgb(255, 180, 120) !important;
+    animation: pulse-active-orange 0.3s infinite alternate !important;
+}
+
+.rhythm-dots[data-line-index="7"] .rhythm-dot.selected {
+    background-color: rgb(120, 210, 30) !important;
+    box-shadow: 0 0 20px rgba(120, 210, 30, 1) !important;
+    border: 3px solid rgb(180, 255, 120) !important;
+    animation: pulse-active-lime 0.3s infinite alternate !important;
+}
+
+@keyframes pulse-active-red {
+    0% { box-shadow: 0 0 15px rgba(255, 30, 30, 0.8); }
+    100% { box-shadow: 0 0 25px rgba(255, 30, 30, 1); }
+}
+
+@keyframes pulse-active-blue {
+    0% { box-shadow: 0 0 15px rgba(30, 30, 255, 0.8); }
+    100% { box-shadow: 0 0 25px rgba(30, 30, 255, 1); }
+}
+
+@keyframes pulse-active-green {
+    0% { box-shadow: 0 0 15px rgba(30, 180, 30, 0.8); }
+    100% { box-shadow: 0 0 25px rgba(30, 180, 30, 1); }
+}
+
+@keyframes pulse-active-yellow {
+    0% { box-shadow: 0 0 15px rgba(255, 255, 30, 0.8); }
+    100% { box-shadow: 0 0 25px rgba(255, 255, 30, 1); }
+}
+
+@keyframes pulse-active-purple {
+    0% { box-shadow: 0 0 15px rgba(255, 30, 255, 0.8); }
+    100% { box-shadow: 0 0 25px rgba(255, 30, 255, 1); }
+}
+
+@keyframes pulse-active-cyan {
+    0% { box-shadow: 0 0 15px rgba(30, 255, 255, 0.8); }
+    100% { box-shadow: 0 0 25px rgba(30, 255, 255, 1); }
+}
+
+@keyframes pulse-active-orange {
+    0% { box-shadow: 0 0 15px rgba(255, 120, 30, 0.8); }
+    100% { box-shadow: 0 0 25px rgba(255, 120, 30, 1); }
+}
+
+@keyframes pulse-active-lime {
+    0% { box-shadow: 0 0 15px rgba(120, 210, 30, 0.8); }
+    100% { box-shadow: 0 0 25px rgba(120, 210, 30, 1); }
+}
+
+/* ステージごとのレイアウト調整 */
+/* 0-4ステージ: 1行表示 */
+body.stage-0 #rhythmDots, 
+body.stage-1 #rhythmDots,
+body.stage-2 #rhythmDots,
+body.stage-3 #rhythmDots,
+body.stage-4 #rhythmDots {
+    flex-direction: column;
+}
+
+/* 5-8ステージ: 3行表示 */
+body.stage-5 #rhythmDots, 
+body.stage-6 #rhythmDots,
+body.stage-7 #rhythmDots,
+body.stage-8 #rhythmDots {
+    flex-direction: column;
+}
+
+/* 9-12ステージ: 4行表示 */
+body.stage-9 #rhythmDots, 
+body.stage-10 #rhythmDots,
+body.stage-11 #rhythmDots,
+body.stage-12 #rhythmDots {
+    flex-direction: column;
+}
+
+/* 13-16ステージ: 8行表示 */
+body.stage-13 #rhythmDots, 
+body.stage-14 #rhythmDots,
+body.stage-15 #rhythmDots,
+body.stage-16 #rhythmDots {
+    flex-direction: column;
+    gap: 10px; /* 行間をやや狭く */
+}
+
+/* 8行表示時はドットをやや小さくする */
+body.stage-13 .rhythm-dot,
+body.stage-14 .rhythm-dot,
+body.stage-15 .rhythm-dot,
+body.stage-16 .rhythm-dot {
+    width: 24px;
+    height: 24px;
+}
+
+/* 8行表示時は横の間隔をやや狭くする */
+body.stage-13 .rhythm-dots,
+body.stage-14 .rhythm-dots,
+body.stage-15 .rhythm-dots,
+body.stage-16 .rhythm-dots {
+    gap: 20px;
+}
+
+.progress-bar, .time-display {
+    display: none;  /* シークバーと時間表示を非表示に */
+}
+
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.modal-content {
+    background-color: transparent;
+    padding: 30px;
+    width: 100%;
+    height: 100%;
+    color: #fff;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.title-text {
+    font-size: 120px;
+    margin-bottom: 40px;
+    text-align: center;
+    color: #fff;
+    font-weight: bold;
+    letter-spacing: 4px;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+    animation: pulse 2s infinite ease-in-out;
+}
+
+.start-instruction {
+    font-size: 24px;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.8);
+    animation: blink 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+@keyframes blink {
+    0% { opacity: 0.4; }
+    50% { opacity: 1; }
+    100% { opacity: 0.4; }
+}
+
+.modal-button {
+    display: block;
+    width: 200px;
+    margin: 0 auto;
+    padding: 12px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    transition: background-color 0.3s;
+}
+
+.modal-button:hover {
+    background-color: #45a049;
+}
+
+/* styles.css */
+
+/* クリック可能なリンクのスタイル */
+.answer-area a {
+    color: #1DA1F2; /* Twitterブルー */
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.answer-area a:hover {
+    text-decoration: underline;
+}
+
+.answer-area {
+    margin-top: 5px;
+    text-align: center;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.answer-area p {
+    color: rgb(255, 255, 255);
+    font-size: 30px;
+    font-weight: bold;
+}
+
+#shareButton {
+    margin-top: 15px;
+    z-index: 10;
+}
+
+/* styles.cssに追加 */
+.share-container {
+    display: none; /* デフォルトでは非表示 */
+    text-align: center;
+    margin: 20px 0;
+    opacity: 0;
+    pointer-events: none; /* クリック不可に */
+    transition: opacity 0.3s ease;
+}
+
+/* ステージ17の時だけ表示 */
+body.stage-17 .share-container {
+    display: block;
+    opacity: 1;
+    pointer-events: auto; /* クリック可能に */
+}
+
+.share-button {
+    background-color: #1DA1F2;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 12px 24px;
+    font-size: 16px;
+    cursor: pointer;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    transition: background-color 0.3s ease;
+}
+
+.share-button:hover {
+    background-color: #1a91da;
+}
+
+/* styles.cssに追加 */
+.share-container {
+    text-align: center;
+    margin: 20px 0;
+    opacity: 0;
+    pointer-events: none; /* クリック不可に */
+    transition: opacity 0.3s ease;
+    display: block;
+}
+
+/* ステージ17以外では完全に非表示 */
+body:not(.stage-17) .share-container {
+    display: none;
+}
+
+/* ステージ17の時だけ表示 */
+body.stage-17 .share-container {
+    opacity: 1;
+    pointer-events: auto; /* クリック可能に */
+}
+
+.share-button {
+    background-color: #1DA1F2;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 12px 24px;
+    font-size: 16px;
+    cursor: pointer;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    transition: background-color 0.3s ease;
+}
+
+.share-button:hover {
+    background-color: #1a91da;
+}
+
+/* リセットボタンのスタイル */
+.reset-container {
+    text-align: center;
+    margin: 20px 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    display: none;
+}
+
+body.stage-16 .reset-container {
+    display: block;
+}
+
+body.stage-16 .reset-container.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.reset-button {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 12px 24px;
+    font-size: 16px;
+    cursor: pointer;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    transition: background-color 0.3s ease;
+}
+
+.reset-button:hover {
+    background-color: #c82333;
+}
+
+
+
+
+.reset-button:hover {
+    background-color: #c82333;
+}
+
+.hint-button {
+    display: none;
+}
+
+.hint-modal {
+    display: none;
+}
+
+.hint-content {
+    background-color: white;
+    padding: 25px;
+    border-radius: 15px;
+    max-width: 90%;
+    width: 400px;
+    color: #333;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.hint-content h3 {
+    font-size: 22px;
+    margin-bottom: 15px;
+    text-align: center;
+    color: #2c3e50;
+}
+
+.hint-content p {
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    color: #34495e;
+}
+
+/* ヒントの答え表示エリア */
+.hint-answer {
+    margin: 15px 0;
+    padding: 12px;
+    background-color: #f7f9fc;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    color: #2c3e50;
+    display: none;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+}
+
+.hint-answer.show {
+    display: block;
+    transform: translateY(0);
+}
+
+/* ボタンコンテナ */
+.hint-buttons {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+/* 共通のボタンスタイル */
+.hint-button-base {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+/* 閉じるボタン */
+.hint-close {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.hint-close:hover {
+    background-color: #c0392b;
+    transform: translateY(-2px);
+}
+
+/* 答えを見るボタン */
+.hint-show-answer {
+    background-color: #3498db;
+    color: white;
+}
+
+.hint-show-answer:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+}
+
+.hint-show-answer:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* ローディング画面 */
+.loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    overflow: hidden;
+}
+
+.loading-screen::before {
+    content: '';
+    position: absolute;
+    width: 150%;
+    height: 150%;
+    background: radial-gradient(circle, rgba(50, 50, 100, 0.1) 0%, rgba(10, 10, 30, 0) 70%);
+    animation: pulse-bg 8s ease infinite;
+}
+
+.loading-screen::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect fill="rgba(255,255,255,0.03)" width="1" height="1" x="0" y="0" /></svg>');
+    opacity: 0.4;
+    pointer-events: none;
+}
+
+.loading-content {
+    position: relative;
+    width: 80%;
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 1;
+}
+
+/* ロゴスタイル */
+.logo-container {
+    text-align: center;
+    margin-bottom: 40px;
+    animation: float 6s ease-in-out infinite;
+}
+
+.logo-text {
+    font-size: 68px;
+    font-weight: 800;
+    letter-spacing: 3px;
+    color: #fff;
+    text-shadow: 0 0 20px rgba(120, 120, 255, 0.7),
+                 0 0 40px rgba(100, 100, 255, 0.3);
+    background: linear-gradient(to bottom, #ffffff, #9898ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: glow 2.5s ease-in-out infinite alternate;
+}
+
+.logo-subtitle {
+    font-size: 20px;
+    color: rgba(255, 255, 255, 0.6);
+    margin-top: 8px;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    animation: pulse-text 2.5s ease-in-out infinite alternate;
+}
+
+/* ローダースタイル */
+.loader-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.loader-bar {
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2) inset;
+}
+
+.loader-progress {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #4169E1, #9370DB, #E6E6FA);
+    background-size: 200% 100%;
+    border-radius: 10px;
+    transition: width 0.4s ease;
+    animation: gradient-shift 2s ease infinite;
+    box-shadow: 0 0 15px rgba(120, 120, 255, 0.7);
+}
+
+.progress-value {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.8);
+    margin-top: 12px;
+    font-weight: 500;
+}
+
+.loading-message {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 14px;
+    letter-spacing: 1px;
+    animation: fade-in-out 2s ease-in-out infinite;
+}
+
+/* アニメーション */
+@keyframes gradient-shift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@keyframes glow {
+    from { text-shadow: 0 0 10px rgba(120, 120, 255, 0.7),
+                         0 0 20px rgba(100, 100, 255, 0.3); }
+    to { text-shadow: 0 0 20px rgba(120, 120, 255, 0.9),
+                      0 0 40px rgba(100, 100, 255, 0.5),
+                      0 0 60px rgba(80, 80, 255, 0.3); }
+}
+
+@keyframes pulse-text {
+    from { opacity: 0.6; }
+    to { opacity: 1; }
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+@keyframes fade-in-out {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+}
+
+@keyframes pulse-bg {
+    0%, 100% { transform: scale(1); opacity: 0.1; }
+    50% { transform: scale(1.2); opacity: 0.2; }
+}
+
+.loading-screen.fade-out {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+/* フルスクリーンボタンのスタイル */
+.fullscreen-button {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 15px;
+    font-size: 14px;
+    cursor: pointer;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    z-index: 1000;
+    transition: all 0.3s ease;
+}
+
+.fullscreen-button:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+    transform: scale(1.05);
+}
+
+/* フルスクリーン時のコンテナスタイル調整 */
+:fullscreen .container {
+    max-width: 100%;
+    height: 100vh;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+:-webkit-full-screen .container {
+    max-width: 100%;
+    height: 100vh;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+:-moz-full-screen .container {
+    max-width: 100%;
+    height: 100vh;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+:-ms-fullscreen .container {
+    max-width: 100%;
+    height: 100vh;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* フルスクリーン時の問題エリア調整 - 追加の調整 */
+:fullscreen .problem-area,
+:-webkit-full-screen .problem-area,
+:-moz-full-screen .problem-area,
+:-ms-fullscreen .problem-area {
+    max-width: min(90vh, 90vw);
+    max-height: min(90vh, 90vw);
+    width: min(90vh, 90vw);
+    height: min(90vh, 90vw);
+    margin: 0 auto 10px auto;
+}
+
+/* フルスクリーン時のボディスタイル調整 */
+:fullscreen body,
+:-webkit-full-screen body,
+:-moz-full-screen body,
+:-ms-fullscreen body {
+    padding-top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    overflow: hidden;
+    margin: 0;
+    scrollbar-width: none; /* Firefox用 */
+    -ms-overflow-style: none; /* IE用 */
+}
+
+/* Chromeなどのスクロールバー非表示 */
+:fullscreen body::-webkit-scrollbar,
+:-webkit-full-screen body::-webkit-scrollbar,
+:-moz-full-screen body::-webkit-scrollbar,
+:-ms-fullscreen body::-webkit-scrollbar {
+    display: none;
+}
+
+/* フルスクリーン時のHTML要素調整 */
+:fullscreen html,
+:-webkit-full-screen html,
+:-moz-full-screen html,
+:-ms-fullscreen html {
+    overflow: hidden;
+    height: 100%;
+}
+
+/* フルスクリーン時のコンテナをより最適化 */
+:fullscreen .container,
+:-webkit-full-screen .container,
+:-moz-full-screen .container,
+:-ms-fullscreen .container {
+    max-width: 100vw;
+    width: 100%;
+    max-height: 100vh;
+    height: 100vh;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    box-sizing: border-box;
+    gap: 10px;
+}
+
+/* 問題エリアのサイズ調整（縦幅を自動調整するように） */
+:fullscreen .problem-area,
+:-webkit-full-screen .problem-area,
+:-moz-full-screen .problem-area,
+:-ms-fullscreen .problem-area {
+    max-width: min(70vh, 70vw);
+    max-height: min(70vh, 70vw);
+    width: min(70vh, 70vw);
+    height: min(70vh, 70vw);
+    margin: 10px auto;
+    flex-shrink: 0;
+}
+
+/* フルスクリーン時のタイトル、コントロール、回答エリアの調整 */
+:fullscreen .title-area,
+:-webkit-full-screen .title-area,
+:-moz-full-screen .title-area,
+:-ms-fullscreen .title-area,
+:fullscreen .controls,
+:-webkit-full-screen .controls,
+:-moz-full-screen .controls,
+:-ms-fullscreen .controls,
+:fullscreen .answer-area,
+:-webkit-full-screen .answer-area,
+:-moz-full-screen .answer-area,
+:-ms-fullscreen .answer-area,
+:fullscreen .rhythm-dots,
+:-webkit-full-screen .rhythm-dots,
+:-moz-full-screen .rhythm-dots,
+:-ms-fullscreen .rhythm-dots {
+    margin: 8px auto;
+    flex-shrink: 0;
+    padding: 5px;
+}
+
+/* フルスクリーン時のヒントボタン位置調整 */
+:fullscreen .hint-button,
+:-webkit-full-screen .hint-button,
+:-moz-full-screen .hint-button,
+:-ms-fullscreen .hint-button {
+    top: 20px;
+    left: 20px;
+}
+
+/* デバッグツールのスタイル */
+.debug-toggle {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: #4CAF50;
+    border: 1px solid #4CAF50;
+    border-radius: 50%;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1001;
+    transition: all 0.3s ease;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+}
+
+.debug-toggle:hover {
+    background-color: rgba(0, 0, 0, 0.9);
+    transform: scale(1.1);
+}
+
+.debug-toggle.active {
+    background-color: #4CAF50;
+    color: white;
+}
+
+/* デフォルトではデバッグツールを非表示 */
+#debugTools {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 12px;
+    border-radius: 8px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    color: white;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    opacity: 0;
+    transform: translateY(20px);
+    pointer-events: none;
+}
+
+#debugTools.visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+#debugTools > div {
+    display: flex;
+    gap: 5px;
+}
+
+/* リズムドット表示設定用のスタイル */
+.rhythm-dots-visibility {
+    margin-top: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    padding-top: 10px;
+}
+
+.dot-toggle-btn {
+    background-color: #333;
+    color: white;
+    border: 1px solid #555;
+    border-radius: 4px;
+    padding: 5px 8px;
+    margin: 2px;
+    cursor: pointer;
+    font-size: 12px;
+    min-width: 30px;
+    text-align: center;
+    transition: all 0.2s ease;
+}
+
+.dot-toggle-btn.active {
+    background-color: #4CAF50;
+    border-color: #4CAF50;
+}
+
+.dot-toggle-btn:hover {
+    background-color: #555;
+}
+
+.debug-btn {
+    background-color: #333;
+    color: white;
+    border: 1px solid #555;
+    border-radius: 4px;
+    padding: 5px 8px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.2s ease;
+}
+
+.debug-btn:hover {
+    background-color: #555;
+}
+
+#stageSelect {
+    padding: 6px;
+    width: 160px;
+    height: 30px;
+    background-color: #333;
+    color: white;
+    border: 1px solid #555;
+    border-radius: 4px;
+    outline: none;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    scrollbar-width: thin;
+    scrollbar-color: #666 #333;
+}
+
+#stageSelect option {
+    padding: 5px;
+}
+
+#stageSelect::-webkit-scrollbar {
+    width: 8px;
+}
+
+#stageSelect::-webkit-scrollbar-track {
+    background: #333;
+}
+
+#stageSelect::-webkit-scrollbar-thumb {
+    background-color: #666;
+    border-radius: 4px;
+}
+
+#stageSelect[size] {
+    max-height: 300px;
+}
+
+#stageSelect:focus {
+    border-color: #4CAF50;
+}
+
+#debugJump {
+    padding: 6px 12px;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    height: 30px;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    transition: background-color 0.2s;
+}
+
+#debugJump:hover {
+    background: #45a049;
+}
+
+.debug-hotkeys {
+    color: white;
+    font-size: 12px;
+    line-height: 1.4;
+    opacity: 0.8;
+}
+
+/* フルスクリーン時のデバッグツール調整 */
+:fullscreen #debugTools,
+:-webkit-full-screen #debugTools,
+:-moz-full-screen #debugTools,
+:-ms-fullscreen #debugTools {
+    bottom: 30px;
+    left: 30px;
+}
+
+:fullscreen .debug-toggle,
+:-webkit-full-screen .debug-toggle,
+:-moz-full-screen .debug-toggle,
+:-ms-fullscreen .debug-toggle {
+    bottom: 30px;
+    right: 30px;
+}
+
+/* JUBEATスタイルのパネルレイアウト調整 */
+.jubeat-grid-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    gap: 6px;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(5, 5, 5);
+    border-radius: 4px;
+    padding: 8px;
+    box-sizing: border-box;
+    border: 1px solid rgba(100, 100, 100, 0.4);
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
+}
+
+.jubeat-panel {
+    position: relative;
+    background-color: #333;
+    border-radius: 5px;
+    overflow: hidden;
+    transition: background-color 0.15s ease;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.8);
+}
+
+.jubeat-panel.active {
+    background-color: #555;
+    box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.4);
+}
+
+.jubeat-panel.selected {
+    background-color: #777;
+    box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.5);
+}
+
+.jubeat-panel-glow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0) 70%);
+    opacity: 0;
+    transition: opacity 0.1s ease;
+}
+
+/* stage-4 ステージ専用スタイル */
+body.stage-4 .jubeat-panel {
+    cursor: pointer;
+    background-color: rgba(10, 10, 10, 0.95);
+    border: 1px solid rgba(80, 80, 80, 0.7);
+    transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 
+        inset 0 0 10px rgba(0, 0, 0, 0.9),
+        0 0 2px rgba(50, 50, 50, 0.3);
+    overflow: hidden;
+}
+
+body.stage-4 .jubeat-panel::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, 
+        rgba(50, 50, 50, 0.05) 0%, 
+        rgba(120, 120, 120, 0.07) 50%, 
+        rgba(30, 30, 30, 0.05) 100%);
+    opacity: 0.2;
+    z-index: 1;
+}
+
+body.stage-4 .jubeat-panel.active {
+    animation: none;
+    background-color: rgba(230, 230, 230, 0.9);
+    box-shadow: 
+        inset 0 0 20px rgba(255, 255, 255, 0.7), 
+        0 0 15px rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(220, 220, 220, 0.9);
+    transform: scale(1.02);
+}
+
+body.stage-4 .jubeat-panel.active::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.95) 0%, transparent 30%);
+    opacity: 0;
+    z-index: 2;
+    animation: jubeat-ripple-mono 0.7s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+}
+
+body.stage-4 .jubeat-panel.active .jubeat-panel-glow {
+    opacity: 1;
+    animation: jubeat-pulse-mono 1.2s infinite alternate;
+    background: radial-gradient(circle, 
+        rgba(255, 255, 255, 0.98) 0%, 
+        rgba(240, 240, 240, 0.9) 15%, 
+        rgba(220, 220, 220, 0.7) 30%, 
+        rgba(180, 180, 180, 0.3) 60%, 
+        transparent 85%);
+}
+
+@keyframes jubeat-pulse-mono {
+    0% { 
+        opacity: 0.8; 
+        transform: scale(0.98);
+        filter: blur(3px) brightness(1.1) contrast(1.2);
+    }
+    100% { 
+        opacity: 0.95; 
+        transform: scale(1.03);
+        filter: blur(0px) brightness(1.4) contrast(1.4);
+    }
+}
+
+@keyframes jubeat-ripple-mono {
+    0% {
+        transform: scale(0.3);
+        opacity: 0.9;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 0;
+    }
+}

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>Do-PLAYER</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+1:wght@700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="startModal" class="modal-overlay">
+        <div class="modal-content">
+            <h1 class="title-text">RealDo</h1>
+            <p class="start-instruction">Press SPACE to start</p>
+        </div>
+    </div>
+
+    <div class="container">
+        
+        <div class="problem-area" id="problemArea">
+            <!-- 問題エリア内の要素は JavaScript で動的に追加 -->
+        </div>
+        
+        <!-- 結果ボックス: ステージ7用 -->
+        <div class="result-box" id="resultBox">
+            <div class="result-box-content" id="resultBoxContent">
+                <!-- 結果コンテンツはJavaScriptで動的に追加 -->
+            </div>
+        </div>
+        
+        <div class="title-area">
+            <h2>チュートリアル</h2>
+            <!-- <p>Start</p> -->
+        </div>
+
+        <div class="rhythm-dots" id="rhythmDots">
+            <!-- Dots will be dynamically added here -->
+        </div>
+
+
+        <div class="controls" style="display: none;">
+            <button class="control-button" id="prevButton">
+                <img src="assets/images/controls/prev.png" alt="Previous">
+            </button>
+            <button class="control-button play-pause" id="playButton">
+                <img src="assets/images/controls/play.png" alt="Play" id="playIcon">
+            </button>
+            <button class="control-button" id="nextButton">
+                <img src="assets/images/controls/next.png" alt="Next">
+            </button>
+        </div>
+
+        <!-- 共有ボタンコンテナを追加 -->
+        <div id="shareContainer" class="share-container">
+            <button onclick="shareToTwitter()" class="share-button">
+                Xで共有
+            </button>
+        </div>
+        
+        <div id="resetContainer" class="reset-container">
+            <button onclick="location.reload()" class="reset-button">
+                リロードして初めからプレイする
+            </button>
+        </div>
+
+        <div class="progress-bar" id="progressBar">
+            <div class="progress-track">
+                <div class="progress" id="progress"></div>
+                <div class="progress-knob" id="progressKnob"></div>
+            </div>
+        </div>
+
+        <div class="time-display">
+            <span id="currentTime">0:00</span>
+            <span>4:14</span>
+        </div>
+
+    </div>
+    
+    <!-- デバッグツール切り替えボタン -->
+    <button id="toggleDebug" class="debug-toggle">DEV</button>
+    
+    <div id="debugTools">
+        <div style="display: flex; gap: 5px;">
+            <select id="stageSelect">
+                <option value="0">チュートリアル</option>
+                <option value="1">ステージ1: りんご</option>
+                <option value="2">ステージ2: みかん</option>
+                <option value="3">ステージ3: つきみ</option>
+                <option value="4">ステージ4: セグメント</option>
+                <option value="5">ステージ5</option>
+                <option value="6">ステージ6</option>
+                <option value="7">ステージ7</option>
+                <option value="8">ステージ8</option>
+                <option value="9">ステージ9</option>
+                <option value="10">ステージ10</option>
+                <option value="11">ステージ11</option>
+                <option value="12">ステージ12</option>
+                <option value="13">ステージ13</option>
+                <option value="14">ステージ14</option>
+                <option value="15">ステージ15</option>
+                <option value="16">ステージ16</option>
+                <option value="17">エンディング</option>
+            </select>
+            <button id="debugJump">移動</button>
+        </div>
+        <div class="rhythm-dots-visibility">
+            <p style="margin: 5px 0">リズムドット表示設定: <span style="font-size: 11px; opacity: 0.8;">(プレイヤーに見えないだけで通常の動作は変わりません)</span></p>
+            <div id="rhythmDotsControls" style="display: flex; flex-wrap: wrap; gap: 5px;"></div>
+            <div style="margin-top: 5px;">
+                <button id="showAllDots" class="debug-btn">全表示</button>
+                <button id="hideAllDots" class="debug-btn">全非表示</button>
+                <button id="toggleCurrentDots" class="debug-btn">現在ステージのみ切替</button>
+            </div>
+        </div>
+        <div class="debug-hotkeys">
+            数字キー: 0-9 = Stage 0-9<br>
+            Shift + 数字キー: 1-9 = Stage 11-19<br>
+            Ctrl + 数字キー: 1-9 = Stage 21-29
+        </div>
+    </div>
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-content">
+            <div class="logo-container">
+                <div class="logo-text">RealDo</div>
+                <div class="logo-subtitle">Rhythm Experience</div>
+            </div>
+            <div class="loader-container">
+                <div class="loader-bar">
+                    <div class="loader-progress"></div>
+                </div>
+                <div class="progress-value">0%</div>
+            </div>
+            <div class="loading-message">Loading amazing experience...</div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
+
