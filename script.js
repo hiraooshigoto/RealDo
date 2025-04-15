@@ -49,7 +49,8 @@ const GIMMICK_TYPES = {
     SPECIAL_CHAR: 'special_char',  // 新しく追加
     JUBEAT_GRID: 'jubeat_grid',  // jubeatのような4x4グリッド
     RHYTHM_LINES: 'rhythm_lines',  // リズム線表示用に追加
-    SYMBOL_GRID: 'symbol_grid'  // ○×などの図形記号を表示するグリッド
+    SYMBOL_GRID: 'symbol_grid',  // ○×などの図形記号を表示するグリッド
+    POPPUN_LANES: 'poppun_lanes'  // ポップンのようなレーン表示用に追加
 };
 // クリック回数を追跡する変数をダミーに置き換え
 const clickCounts = {
@@ -322,42 +323,6 @@ const STAGE_CONFIGS = {
     },
     7: {
         gimmicks: [
-
-            {
-                type: GIMMICK_TYPES.RHYTHM_LINES,
-                settings: {
-                    x: 50,      // 中央に配置
-                    y: 50,      // 中央に配置
-                    size: 400,  // サイズ調整
-                    scaleFactor: 0.7, // 全体のスケール係数（1.0が100%のサイズ、小さくするとコンパクトに）
-                    color: "#000", // 線の色
-                    lineWidth: 2, // 線の太さ（初期値）
-                    lines: [
-                        // 各ビートに対応する線の設定 - 漢字「画」の筆順に合わせて8画で構成
-                        { beat: 1, x1: 17, y1: 15, x2: 83, y2: 15, width: 2 }, // 第1画：上の横線 - やや太め
-                        { beat: 2, x1: 25, y1: 30, x2: 25, y2: 80, width: 2 }, // 第2画：左の縦線 - 標準
-                        { beat: 3, x1: 25, y1: 30, x2: 75, y2: 30, width: 2 }, // 第3画：下の横線 - 標準
-                        { beat: 3, x1: 75, y1: 30, x2: 75, y2: 80, width: 2 }, // 第3画：下の横線 - 標準
-                        { beat: 4, x1: 50, y1: 15, x2: 50, y2: 80, width: 2 }, // 第4画：右の縦線 - やや太め
-                        
-                        // ビート5では一度に複数の線を描画（內の上部）
-                        { beat: 5, x1: 25, y1: 55, x2: 75, y2: 55, width: 2 }, // 第5画：内側の上の横線
-                        
-                        // ビート6でも複数の線（內の左側）
-                        { beat: 6, x1: 25, y1: 80, x2: 75, y2: 80, width: 2 }, // 第6画：内側の左の縦線 - やや太め
-                        
-                        // ビート7も複数線（內の下部）
-                        { beat: 7, x1: 10, y1: 30, x2: 10, y2: 95, width: 2 }, // 第7画：内側の下の横線
-                        { beat: 7, x1: 10, y1: 95, x2: 90, y2: 95, width: 2 }, // 第7画：内側の下の - やや太め
-                        // ビート8も複数線（內の右側）
-                        { beat: 8, x1: 90, y1: 30, x2: 90, y2: 95, width: 2 }  // 第8画：内側の右の縦線 - 最も太い
-                    ]
-                }
-            }
-        ]
-    },
-    8: {
-        gimmicks: [
             {
                 type: GIMMICK_TYPES.SYMBOL_GRID,
                 settings: {
@@ -394,6 +359,41 @@ const STAGE_CONFIGS = {
                                 { x: 78, y: 57, beatNumber: 4, size: 40 }
                             ]
                         }
+                    ]
+                }
+            }
+        ]
+    },
+    8: {
+        gimmicks: [
+            {
+                type: GIMMICK_TYPES.RHYTHM_LINES,
+                settings: {
+                    x: 50,      // 中央に配置
+                    y: 50,      // 中央に配置
+                    size: 400,  // サイズ調整
+                    scaleFactor: 0.7, // 全体のスケール係数（1.0が100%のサイズ、小さくするとコンパクトに）
+                    color: "#000", // 線の色
+                    lineWidth: 2, // 線の太さ（初期値）
+                    lines: [
+                        // 各ビートに対応する線の設定 - 漢字「画」の筆順に合わせて8画で構成
+                        { beat: 1, x1: 17, y1: 15, x2: 83, y2: 15, width: 2 }, // 第1画：上の横線 - やや太め
+                        { beat: 2, x1: 25, y1: 30, x2: 25, y2: 80, width: 2 }, // 第2画：左の縦線 - 標準
+                        { beat: 3, x1: 25, y1: 30, x2: 75, y2: 30, width: 2 }, // 第3画：下の横線 - 標準
+                        { beat: 3, x1: 75, y1: 30, x2: 75, y2: 80, width: 2 }, // 第3画：下の横線 - 標準
+                        { beat: 4, x1: 50, y1: 15, x2: 50, y2: 80, width: 2 }, // 第4画：右の縦線 - やや太め
+                        
+                        // ビート5では一度に複数の線を描画（內の上部）
+                        { beat: 5, x1: 25, y1: 55, x2: 75, y2: 55, width: 2 }, // 第5画：内側の上の横線
+                        
+                        // ビート6でも複数の線（內の左側）
+                        { beat: 6, x1: 25, y1: 80, x2: 75, y2: 80, width: 2 }, // 第6画：内側の左の縦線 - やや太め
+                        
+                        // ビート7も複数線（內の下部）
+                        { beat: 7, x1: 10, y1: 30, x2: 10, y2: 95, width: 2 }, // 第7画：内側の下の横線
+                        { beat: 7, x1: 10, y1: 95, x2: 90, y2: 95, width: 2 }, // 第7画：内側の下の - やや太め
+                        // ビート8も複数線（內の右側）
+                        { beat: 8, x1: 90, y1: 30, x2: 90, y2: 95, width: 2 }  // 第8画：内側の右の縦線 - 最も太い
                     ]
                 }
             }
@@ -481,20 +481,65 @@ const STAGE_CONFIGS = {
     14: {
         gimmicks: [
             {
-                type: GIMMICK_TYPES.RHYTHM_DOTS,
+                type: GIMMICK_TYPES.POPPUN_LANES,
                 settings: {
                     x: 50,      // 全体の中心X座標
                     y: 50,      // 全体の中心Y座標
-                    size: 400,  // 全体のサイズ
-                    dots: [
-                        { x: 50, y: 35, size: 25, beat: 1 },  // 左上
-                        { x: 73, y: 35, size: 25, beat: 2 },  // 右上
-                        { x: 40, y: 85, size: 25, beat: 3 },  // 左から2番目
-                        { x: 39, y: 35, size: 25, beat: 4 },  // 右から2番目
-                        { x: 61.5, y: 35, size: 25, beat: 5 },  // 左から3番目
-                        { x: 84, y: 35, size: 25, beat: 6 },  // 右から3番目
-                        { x: 50, y: 85, size: 25, beat: 7 },  // 左下
-                        { x: 60, y: 85, size: 25, beat: 8 }   // 右下
+                    size: 500,  // 全体のサイズ
+                    laneWidth: 45, // レーンの幅（px）
+                    laneSpacing: 8, // レーン間のスペース（px）
+                    laneHeight: 380, // レーンの高さ（px）
+                    laneRadius: 15, // レーン上部の丸み（px）
+                    noteSize: 40, // ノートのサイズ（px）
+                    noteSpeed: 3, // ノーツの落下速度（秒）- 値が小さいほど速い
+                    hitLinePosition: 85, // 判定ラインの位置（レーンの下からの％）
+                    hitLineThickness: 4, // 判定ラインの太さ（px）
+                    hitLineColor: "rgba(255, 255, 255, 0.7)", // 判定ラインの色
+                    laneGradient: true, // グラデーションを適用
+                    lanes: [
+                        { color: "#FF3333", key: "a", keyCode: 65, noteColor: "#FF9999" }, // 1レーン目（赤）- Aキー
+                        { color: "#FF9900", key: "s", keyCode: 83, noteColor: "#FFCC99" }, // 2レーン目（オレンジ）- Sキー
+                        { color: "#FFCC00", key: "d", keyCode: 68, noteColor: "#FFFF99" }, // 3レーン目（黄）- Dキー
+                        { color: "#33CC33", key: "f", keyCode: 70, noteColor: "#99FF99" }, // 4レーン目（緑）- Fキー
+                        { color: "#33CCFF", key: "j", keyCode: 74, noteColor: "#99FFFF" }, // 5レーン目（水色）- Jキー
+                        { color: "#3333FF", key: "k", keyCode: 75, noteColor: "#9999FF" }, // 6レーン目（青）- Kキー
+                        { color: "#9933FF", key: "l", keyCode: 76, noteColor: "#CC99FF" }, // 7レーン目（紫）- Lキー
+                        { color: "#FF33FF", key: ";", keyCode: 186, noteColor: "#FF99FF" }  // 8レーン目（ピンク）- ;キー
+                    ],
+                    // サンプル譜面データ
+                    notes: [
+                        // 各レーンにサンプルノート配置（beat単位）
+                        { lane: 0, time: 1, timeUnit: "beat" },
+                        { lane: 1, time: 2, timeUnit: "beat" },
+                        { lane: 2, time: 3, timeUnit: "beat" },
+                        { lane: 3, time: 4, timeUnit: "beat" },
+                        { lane: 4, time: 5, timeUnit: "beat" },
+                        { lane: 5, time: 6, timeUnit: "beat" },
+                        { lane: 6, time: 7, timeUnit: "beat" },
+                        { lane: 7, time: 8, timeUnit: "beat" },
+                        
+                        // 秒単位でのノート配置サンプル
+                        { lane: 0, time: 5.5, timeUnit: "second" },
+                        { lane: 1, time: 6.0, timeUnit: "second" },
+                        { lane: 2, time: 6.5, timeUnit: "second" },
+                        { lane: 3, time: 7.0, timeUnit: "second" },
+                        
+                        // 複数のノートが連続するパターン（リズムパターン）
+                        { lane: 0, time: 10, timeUnit: "beat" },
+                        { lane: 1, time: 10.5, timeUnit: "beat" },
+                        { lane: 2, time: 11, timeUnit: "beat" },
+                        { lane: 3, time: 11.5, timeUnit: "beat" },
+                        
+                        // 複数レーンに同時に出現するノート（コード）
+                        { lane: 4, time: 13, timeUnit: "beat" },
+                        { lane: 5, time: 13, timeUnit: "beat" },
+                        { lane: 6, time: 13, timeUnit: "beat" },
+                        
+                        // リズムパターンの繰り返し
+                        { lane: 7, time: 15, timeUnit: "beat" },
+                        { lane: 6, time: 15.5, timeUnit: "beat" },
+                        { lane: 5, time: 16, timeUnit: "beat" },
+                        { lane: 4, time: 16.5, timeUnit: "beat" }
                     ]
                 }
             }
@@ -607,7 +652,7 @@ const STAGE_NAMES = [
     "チュートリアル",
     "Do", "「テイル」が答えだ！", "「たいかい」が答えだ！",
     "水　 金　 地　 火　 木　 土　 天　 海", "これは何？", "「RUN」が答えだ！",
-    "「OUT」を作ろう！", "「まつまる」が答えだ！", "「」が答えだ！",
+    "「まつまる」が答えだ！", "「OUT」を作ろう！", "「」が答えだ！",
     "「ドーナツ」を作ろう！", "！", "「MUTE」が答えだ！",
     "「エース」が答えだ！", "！！", "！",
     "「かおり」が答えだ！", "エンディング-おめでとう！"
@@ -728,8 +773,8 @@ function updateProblemElements() {
     // 結果ボックスの表示を制御
     const resultBox = document.getElementById('resultBox');
     if (resultBox) {
-        // ステージ7の場合のみ表示
-        if (currentStage === 7) {
+        // ステージ8の場合のみ表示
+        if (currentStage === 8) {
             resultBox.style.display = 'flex';
         } else {
             resultBox.style.display = 'none';
@@ -750,14 +795,14 @@ const stageSettings = {
     4: { dots: 8 },
     5: { dots: 8 },
     6: { dots: 8 },
-    7: { dots: 8 },
-    8: { dots: 4, lines: 3 }, // 4ドット×3ライン
+    7: { dots: 4, lines: 3 }, // 4ドット×3ライン
+    8: { dots: 8 },
     9: { dots: 8 },
     10: { dots: 4 },
     11: { dots: 16 },
     12: { dots: 8 },
     13: { dots: 8 },
-    14: { dots: 8 },
+    14: { dots: 32 },
     15: { dots: 8 },
     16: { dots: 8 },
     17: { dots: 8 }
@@ -794,14 +839,14 @@ const correctPatterns = {
         [1, 2, 3, 4, 5]     // ライン2のパターン // ライン2（dキー）のパターン
     ],
     7: [
-        [2, 3, 6], // ライン0のパターン
-        [7, 8], // ライン1のパターン
-        [1, 4]  // ライン2のパターン
-    ],
-    8: [
         [1, 3, 4], // ライン0のパターン
         [1, 3], // ライン1のパターン
         [2, 4]  // ライン2のパターン
+    ],
+    8: [
+        [2, 3, 6], // ライン0のパターン
+        [7, 8], // ライン1のパターン
+        [1, 4]  // ライン2のパターン
     ],
     
     // 9-12ステージは4ライン
@@ -2286,6 +2331,10 @@ _updateNumberTextGimmick(element, config, containerSize) {
                 case GIMMICK_TYPES.SYMBOL_GRID:
                     this._updateSymbolGridGimmick(element, gimmickConfig, containerSize);
                     break;
+                    
+                case GIMMICK_TYPES.POPPUN_LANES:
+                    this._updatePoppunLanesGimmick(element, gimmickConfig, containerSize);
+                    break;
             }
         });
         
@@ -2470,6 +2519,436 @@ _updateNumberTextGimmick(element, config, containerSize) {
     reset() {
         this.activeWallImages.forEach(img => img.remove());
         this.activeWallImages.clear();
+    }
+
+    // ポップンのようなレーンギミックの更新
+    _updatePoppunLanesGimmick(element, config, containerSize) {
+        // 既存のレーンをクリア
+        element.innerHTML = '';
+        
+        const settings = config.settings;
+        const totalLanes = settings.lanes.length;
+        const laneWidth = settings.laneWidth;
+        const laneSpacing = settings.laneSpacing;
+        const totalWidth = (laneWidth + laneSpacing) * totalLanes - laneSpacing;
+        const laneHeight = settings.laneHeight;
+        const laneRadius = settings.laneRadius || 15;
+        const noteSpeed = settings.noteSpeed || 3; // デフォルト3秒
+        const hitLinePosition = settings.hitLinePosition || 85; // デフォルト85%
+        const hitLineThickness = settings.hitLineThickness || 4; // デフォルト4px
+        const hitLineColor = settings.hitLineColor || "rgba(255, 255, 255, 0.7)"; // デフォルト半透明白
+        const useGradient = settings.laneGradient !== undefined ? settings.laneGradient : true;
+        
+        // 全体コンテナの背景を追加
+        element.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+        element.style.borderRadius = '10px';
+        element.style.boxShadow = '0 0 20px rgba(0, 0, 0, 0.5)';
+        
+        // レーンコンテナの作成
+        const lanesContainer = document.createElement('div');
+        lanesContainer.className = 'poppun-lanes-container';
+        lanesContainer.style.position = 'absolute';
+        lanesContainer.style.left = '50%';
+        lanesContainer.style.top = '50%';
+        lanesContainer.style.transform = 'translate(-50%, -50%)';
+        lanesContainer.style.width = `${totalWidth}px`;
+        lanesContainer.style.height = `${laneHeight}px`;
+        lanesContainer.style.display = 'flex';
+        lanesContainer.style.justifyContent = 'space-between';
+        lanesContainer.style.padding = '20px';
+        lanesContainer.style.boxSizing = 'content-box';
+        
+        // ゲームタイトルを追加（ポップンっぽく）
+        const titleElement = document.createElement('div');
+        titleElement.textContent = 'POPPUN STAGE 14';
+        titleElement.style.position = 'absolute';
+        titleElement.style.top = '-40px';
+        titleElement.style.left = '0';
+        titleElement.style.width = '100%';
+        titleElement.style.textAlign = 'center';
+        titleElement.style.color = 'white';
+        titleElement.style.fontFamily = '"M PLUS Rounded 1c", sans-serif';
+        titleElement.style.fontSize = '24px';
+        titleElement.style.fontWeight = 'bold';
+        titleElement.style.textShadow = '0 0 10px rgba(255, 255, 255, 0.8)';
+        lanesContainer.appendChild(titleElement);
+        
+        // 判定用ヒット状態の記録
+        const hitStates = {};
+        
+        // 各レーンを作成
+        settings.lanes.forEach((lane, index) => {
+            const laneElement = document.createElement('div');
+            laneElement.className = 'poppun-lane';
+            laneElement.dataset.lane = index;
+            laneElement.style.width = `${laneWidth}px`;
+            laneElement.style.height = '100%';
+            laneElement.style.position = 'relative';
+            laneElement.style.overflow = 'hidden'; // はみ出し防止
+            laneElement.style.borderTopLeftRadius = `${laneRadius}px`;
+            laneElement.style.borderTopRightRadius = `${laneRadius}px`;
+            
+            // ポップン風のグラデーション背景
+            if (useGradient) {
+                const color = lane.color;
+                const darkerColor = color.replace(/rgb\((\d+), (\d+), (\d+)\)/g, (_, r, g, b) => 
+                    `rgb(${Math.max(0, parseInt(r) - 50)}, ${Math.max(0, parseInt(g) - 50)}, ${Math.max(0, parseInt(b) - 50)})`
+                ).replace(/#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})/i, (_, r, g, b) => {
+                    const darker = (hex) => Math.max(0, parseInt(hex, 16) - 50).toString(16).padStart(2, '0');
+                    return `#${darker(r)}${darker(g)}${darker(b)}`;
+                });
+                
+                laneElement.style.background = `linear-gradient(to bottom, ${color} 0%, ${darkerColor} 100%)`;
+            } else {
+                laneElement.style.backgroundColor = lane.color;
+            }
+            
+            laneElement.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0.3), inset 0 0 5px rgba(255, 255, 255, 0.3)';
+            
+            // レーン装飾（ポップン風のライン模様）
+            const laneDecoration = document.createElement('div');
+            laneDecoration.className = 'poppun-lane-decoration';
+            laneDecoration.style.position = 'absolute';
+            laneDecoration.style.top = '0';
+            laneDecoration.style.left = '0';
+            laneDecoration.style.width = '100%';
+            laneDecoration.style.height = '100%';
+            laneDecoration.style.backgroundImage = `
+                linear-gradient(to bottom, 
+                    transparent 0%, 
+                    transparent 20%, 
+                    rgba(255, 255, 255, 0.1) 20%, 
+                    rgba(255, 255, 255, 0.1) 22%,
+                    transparent 22%,
+                    transparent 40%,
+                    rgba(255, 255, 255, 0.1) 40%,
+                    rgba(255, 255, 255, 0.1) 42%,
+                    transparent 42%,
+                    transparent 60%,
+                    rgba(255, 255, 255, 0.1) 60%,
+                    rgba(255, 255, 255, 0.1) 62%,
+                    transparent 62%
+                )
+            `;
+            laneElement.appendChild(laneDecoration);
+            
+            // キーラベルを追加
+            const keyLabel = document.createElement('div');
+            keyLabel.className = 'lane-key-label';
+            keyLabel.textContent = lane.key.toUpperCase();
+            keyLabel.style.position = 'absolute';
+            keyLabel.style.bottom = '12px';
+            keyLabel.style.left = '50%';
+            keyLabel.style.transform = 'translateX(-50%)';
+            keyLabel.style.fontFamily = 'Arial, sans-serif';
+            keyLabel.style.fontSize = '22px';
+            keyLabel.style.fontWeight = 'bold';
+            keyLabel.style.color = 'white';
+            keyLabel.style.textShadow = '0 0 5px rgba(0, 0, 0, 0.8)';
+            keyLabel.style.zIndex = '5'; // 他の要素より前面に
+            
+            // キーボックス（ポップン風）
+            const keyBox = document.createElement('div');
+            keyBox.className = 'lane-key-box';
+            keyBox.style.position = 'absolute';
+            keyBox.style.bottom = '5px';
+            keyBox.style.left = '50%';
+            keyBox.style.transform = 'translateX(-50%)';
+            keyBox.style.width = '80%';
+            keyBox.style.height = '35px';
+            keyBox.style.borderRadius = '5px';
+            keyBox.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+            keyBox.style.boxShadow = 'inset 0 0 5px rgba(255, 255, 255, 0.3)';
+            keyBox.style.zIndex = '4';
+            laneElement.appendChild(keyBox);
+            
+            laneElement.appendChild(keyLabel);
+            
+            // 判定ラインを追加
+            const hitLine = document.createElement('div');
+            hitLine.className = 'poppun-hit-line';
+            hitLine.style.position = 'absolute';
+            hitLine.style.bottom = `${hitLinePosition}%`;
+            hitLine.style.left = '0';
+            hitLine.style.width = '100%';
+            hitLine.style.height = `${hitLineThickness}px`;
+            hitLine.style.backgroundColor = hitLineColor;
+            hitLine.style.boxShadow = '0 0 10px rgba(255, 255, 255, 0.6)';
+            hitLine.style.zIndex = '3';
+            laneElement.appendChild(hitLine);
+            
+            lanesContainer.appendChild(laneElement);
+        });
+        
+        element.appendChild(lanesContainer);
+        
+        // グローバルスタイルを追加（アニメーション用）
+        const styleElement = document.createElement('style');
+        styleElement.textContent = `
+            @keyframes noteMove {
+                from { bottom: 100%; }
+                to { bottom: -10%; }
+            }
+            
+            @keyframes noteHit {
+                0% { transform: translate(-50%, 0) scale(1); opacity: 1; }
+                50% { transform: translate(-50%, 0) scale(1.8); opacity: 0.8; }
+                100% { transform: translate(-50%, 0) scale(2.5); opacity: 0; }
+            }
+            
+            @keyframes keyPress {
+                0% { transform: scale(1); }
+                50% { transform: scale(0.9); }
+                100% { transform: scale(1); }
+            }
+            
+            .poppun-lane.active {
+                box-shadow: 0 0 20px white, inset 0 0 30px rgba(255, 255, 255, 0.8) !important;
+            }
+            
+            .poppun-lane.active .lane-key-box {
+                animation: keyPress 0.1s ease-in-out;
+                background-color: rgba(255, 255, 255, 0.7) !important;
+            }
+            
+            .poppun-note {
+                position: absolute;
+                left: 50%;
+                transform: translateX(-50%);
+                width: ${settings.noteSize}px;
+                height: ${settings.noteSize}px;
+                border-radius: 50%;
+                background-color: white;
+                box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+                z-index: 2;
+                transition: transform 0.05s ease-out;
+            }
+            
+            .poppun-note::before {
+                content: '';
+                position: absolute;
+                top: 15%;
+                left: 15%;
+                width: 40%;
+                height: 40%;
+                border-radius: 50%;
+                background-color: rgba(255, 255, 255, 0.8);
+            }
+            
+            .poppun-note.hit {
+                animation: noteHit 0.3s forwards;
+            }
+        `;
+        document.head.appendChild(styleElement);
+        
+        // キーイベントをレーンに接続
+        const keyDownHandler = (e) => {
+            const lane = settings.lanes.find(l => l.keyCode === e.keyCode);
+            if (!lane || !isPlaying) return;
+            
+            const index = settings.lanes.indexOf(lane);
+            const laneElement = lanesContainer.children[index];
+            laneElement.classList.add('active');
+            
+            // 判定処理
+            const hitPosition = laneHeight * (hitLinePosition / 100);
+            const hitWindow = 90; // 判定窓（px）- 上下45px
+            
+            // レーン内の全ノートを取得し、判定する
+            const noteElements = laneElement.querySelectorAll('.poppun-note:not(.hit)');
+            noteElements.forEach(noteEl => {
+                // ノートの現在位置を取得
+                const noteRect = noteEl.getBoundingClientRect();
+                const laneRect = laneElement.getBoundingClientRect();
+                
+                // 判定位置からの距離を計算
+                const noteBottomPosition = laneRect.bottom - noteRect.bottom;
+                const hitLineBottomPosition = laneRect.height * (hitLinePosition / 100);
+                const distance = Math.abs(noteBottomPosition - hitLineBottomPosition);
+                
+                // 判定窓内にあるかチェック
+                if (distance < hitWindow/2) {
+                    // ヒット判定
+                    noteEl.classList.add('hit');
+                    
+                    // ヒット時の視覚効果
+                    const hitEffect = document.createElement('div');
+                    hitEffect.className = 'poppun-hit-effect';
+                    hitEffect.style.position = 'absolute';
+                    hitEffect.style.bottom = `${hitLinePosition}%`;
+                    hitEffect.style.left = '50%';
+                    hitEffect.style.transform = 'translate(-50%, 0)';
+                    hitEffect.style.width = `${settings.noteSize * 1.5}px`;
+                    hitEffect.style.height = `${settings.noteSize * 1.5}px`;
+                    hitEffect.style.borderRadius = '50%';
+                    hitEffect.style.backgroundColor = 'rgba(255, 255, 255, 0.7)';
+                    hitEffect.style.animation = 'noteHit 0.3s forwards';
+                    hitEffect.style.zIndex = '4';
+                    laneElement.appendChild(hitEffect);
+                    
+                    // 0.3秒後に効果を削除
+                    setTimeout(() => {
+                        hitEffect.remove();
+                    }, 300);
+                    
+                    // ヒット状態を記録
+                    const noteId = noteEl.dataset.noteId;
+                    if (noteId) {
+                        hitStates[noteId] = true;
+                    }
+                }
+            });
+        };
+        
+        const keyUpHandler = (e) => {
+            const lane = settings.lanes.find(l => l.keyCode === e.keyCode);
+            if (!lane) return;
+            
+            const index = settings.lanes.indexOf(lane);
+            const laneElement = lanesContainer.children[index];
+            laneElement.classList.remove('active');
+        };
+        
+        // イベントハンドラを登録
+        document.addEventListener('keydown', keyDownHandler);
+        document.addEventListener('keyup', keyUpHandler);
+        
+        // クリーンアップ関数を作成
+        const cleanup = () => {
+            document.removeEventListener('keydown', keyDownHandler);
+            document.removeEventListener('keyup', keyUpHandler);
+            styleElement.remove();
+        };
+        
+        // 要素が削除されたときにイベントリスナーを削除
+        element.addEventListener('DOMNodeRemoved', cleanup);
+        
+        // ノート生成と更新を行う関数
+        const updateNotes = () => {
+            if (currentStage !== 14) return;
+            
+            const currentTimeInSeconds = audio.currentTime;
+            const currentBeatNumber = currentTimeInSeconds * BEATS_PER_SECOND;
+            
+            // 各レーンでノートを更新
+            settings.lanes.forEach((lane, laneIndex) => {
+                const laneElement = lanesContainer.children[laneIndex];
+                
+                // このレーンのノートを取得
+                const laneNotes = settings.notes.filter(note => note.lane === laneIndex);
+                
+                laneNotes.forEach(note => {
+                    // ノートのIDを作成（一意なキー）
+                    const noteId = `note-${laneIndex}-${note.time}-${note.timeUnit || 'beat'}`;
+                    
+                    // このノートがすでにヒットしているか、画面上にあるかチェック
+                    if (hitStates[noteId] || document.getElementById(noteId)) return;
+                    
+                    // ノートの出現タイミングを計算
+                    let noteTime;
+                    if (note.timeUnit === 'second') {
+                        noteTime = note.time;
+                    } else {
+                        // beat単位の場合、秒に変換
+                        noteTime = note.time * BEAT_INTERVAL;
+                    }
+                    
+                    // ノートが表示範囲に入ったかチェック
+                    const timeToAppear = noteTime - noteSpeed;
+                    if (currentTimeInSeconds >= timeToAppear && currentTimeInSeconds <= noteTime + 1) {
+                        // 新しいノートを作成
+                        const noteElement = document.createElement('div');
+                        noteElement.id = noteId;
+                        noteElement.className = 'poppun-note';
+                        noteElement.dataset.noteId = noteId;
+                        noteElement.dataset.time = noteTime;
+                        
+                        // レーン固有のノート色を適用
+                        if (lane.noteColor) {
+                            noteElement.style.backgroundColor = lane.noteColor;
+                            // ノートの内側の光沢を調整
+                            noteElement.style.boxShadow = `0 0 10px ${lane.noteColor}, inset -3px -3px 6px rgba(0,0,0,0.2), inset 3px 3px 6px rgba(255,255,255,0.8)`;
+                        } else {
+                            noteElement.style.backgroundColor = 'white';
+                            noteElement.style.boxShadow = '0 0 10px white, inset -3px -3px 6px rgba(0,0,0,0.2), inset 3px 3px 6px rgba(255,255,255,0.8)';
+                        }
+                        
+                        // ノートのスタイル - 音楽が再生中のときのみアニメーション
+                        if (isPlaying) {
+                            noteElement.style.animation = `noteMove ${noteSpeed}s linear forwards`;
+                        } else {
+                            // 音楽停止中は一時停止状態で表示
+                            const progress = (currentTimeInSeconds - timeToAppear) / noteSpeed;
+                            const bottomPosition = 100 - (progress * 110); // 0%〜110%の範囲で計算
+                            noteElement.style.bottom = `${Math.max(0, bottomPosition)}%`;
+                            noteElement.style.animationPlayState = 'paused';
+                        }
+                        
+                        // レーンに追加
+                        laneElement.appendChild(noteElement);
+                        
+                        // ノートが判定ライン通過後に自動的に削除（音楽再生中のみ）
+                        if (isPlaying) {
+                            setTimeout(() => {
+                                if (noteElement.parentNode) {
+                                    noteElement.remove();
+                                }
+                            }, noteSpeed * 1000 + 500); // ノートが画面から完全に消えるタイミング
+                        }
+                    }
+                });
+            });
+            
+            // 音楽の再生状態変化時にノートのアニメーションを調整
+            const updateNoteAnimations = () => {
+                const allNotes = lanesContainer.querySelectorAll('.poppun-note');
+                allNotes.forEach(noteEl => {
+                    if (isPlaying) {
+                        // 音楽再生時はアニメーション再開
+                        const noteId = noteEl.dataset.noteId;
+                        const noteData = settings.notes.find(n => {
+                            const nId = `note-${n.lane}-${n.time}-${n.timeUnit || 'beat'}`;
+                            return nId === noteId;
+                        });
+                        
+                        if (noteData) {
+                            let noteTime;
+                            if (noteData.timeUnit === 'second') {
+                                noteTime = noteData.time;
+                            } else {
+                                noteTime = noteData.time * BEAT_INTERVAL;
+                            }
+                            
+                            const timeToAppear = noteTime - noteSpeed;
+                            const remainingTime = (noteTime + 1 - currentTimeInSeconds) / noteSpeed * noteSpeed;
+                            
+                            noteEl.style.animation = `noteMove ${remainingTime}s linear forwards`;
+                            noteEl.style.bottom = '';
+                        }
+                    } else {
+                        // 音楽停止時はアニメーション一時停止
+                        noteEl.style.animationPlayState = 'paused';
+                        // 現在位置を計算して固定
+                        const computedStyle = window.getComputedStyle(noteEl);
+                        const currentBottom = computedStyle.bottom;
+                        noteEl.style.animation = 'none';
+                        noteEl.style.bottom = currentBottom;
+                    }
+                });
+            };
+            
+            // 音楽の状態が変わったときのイベントハンドラを追加
+            if (!element.hasPlayStateListener) {
+                element.hasPlayStateListener = true;
+                playButton.addEventListener('click', updateNoteAnimations);
+            }
+            
+            // 継続的に更新
+            requestAnimationFrame(updateNotes);
+        };
+        
+        // ノート更新を開始
+        updateNotes();
     }
 }
 //====================================================
@@ -2764,8 +3243,8 @@ function updateStageContent() {
     // 結果ボックスの表示を管理（ステージ7でのみ表示）
     const resultBox = document.getElementById('resultBox');
     if (resultBox) {
-        // ステージ7の場合は結果ボックスを設定
-        if (currentStage === 7) {
+        // ステージ8の場合は結果ボックスを設定
+        if (currentStage === 8) {
             // 結果ボックスは単純に三文字だけを表示
             resultBox.innerHTML = `<div id="stageResults">
                 <div class="result-char-container">
@@ -2800,7 +3279,7 @@ function updateStageContent() {
             styleEl.id = 'result-box-styles';
             document.head.appendChild(styleEl);
         } else {
-            // ステージ7以外では結果ボックスを非表示
+            // ステージ8以外では結果ボックスを非表示
             resultBox.innerHTML = '';
         }
     }
@@ -2873,8 +3352,8 @@ function updateProblemElements() {
     // 結果ボックスの表示を制御
     const resultBox = document.getElementById('resultBox');
     if (resultBox) {
-        // ステージ7の場合のみ表示
-        if (currentStage === 7) {
+        // ステージ8の場合のみ表示
+        if (currentStage === 8) {
             resultBox.style.display = 'flex';
         } else {
             resultBox.style.display = 'none';
@@ -3054,16 +3533,16 @@ const debugTools = {
             if (e.key >= '0' && e.key <= '9' && !e.shiftKey && !e.ctrlKey) {
                 targetStage = parseInt(e.key);
             }
-            // Shift + 数字キー (11-19)
-            else if (e.key >= '1' && e.key <= '9' && e.shiftKey && !e.ctrlKey) {
+            // Shift + 数字キー (11-17)
+            else if (e.key >= '1' && e.key <= '7' && e.shiftKey && !e.ctrlKey) {
                 targetStage = parseInt(e.key) + 10;
             }
-            // Ctrl + 数字キー (21-29)
-            else if (e.key >= '1' && e.key <= '9' && !e.shiftKey && e.ctrlKey) {
+            // Ctrl + 数字キー (21-25)
+            else if (e.key >= '1' && e.key <= '5' && !e.shiftKey && e.ctrlKey) {
                 targetStage = parseInt(e.key) + 20;
             }
 
-            if (targetStage !== null && targetStage <= 25) {
+            if (targetStage !== null && targetStage <= 17) {
                 this.forceJumpToStage(targetStage);
             }
         });
@@ -3265,7 +3744,7 @@ const debugTools = {
 
     // 強制的にステージを移動する関数
     forceJumpToStage(stageNumber) {
-        if (stageNumber >= 0 && stageNumber <= 25) {
+        if (stageNumber >= 0 && stageNumber <= 17) {
             // ゲームの状態をリセット
             selectedBeats.clear();
             isLoopComplete = false;
@@ -3610,9 +4089,9 @@ function handleDotSelection(lineIndex) {
         gimmickManager.updateGimmick(currentStage);
     }
     
-    // ステージ7のパターン認識と結果表示
-    if (currentStage === 7) {
-        updateStage7Results();
+    // ステージ8のパターン認識と結果表示
+    if (currentStage === 8) {
+        updateStage8Results();
     }
 }
 
@@ -3776,4 +4255,78 @@ function updateFullscreenButtonText() {
     // フルスクリーン切り替え時にリサイズイベントを発火させて、
     // 問題エリアの要素が正しくリサイズされるようにする
     window.dispatchEvent(new Event('resize'));
+}
+
+// ステージ8の結果解析と表示の関数
+function updateStage8Results() {
+    // パターンとアルファベットのマッピング定義（1～8の拍のパターン）
+    const patternMap = [
+        { dots: [1, 4], letter: 'T' },
+        { dots: [2, 3, 5], letter: 'A' },
+        { dots: [2, 3, 6], letter: 'O' },
+        { dots: [2], letter: 'I' },
+        { dots: [4], letter: 'I' },
+        { dots: [8], letter: 'I' },
+        { dots: [7, 8], letter: 'U' },
+        { dots: [2, 6], letter: 'L' },
+        { dots: [7], letter: 'L' }
+    ];
+    
+    // 各ラインの結果を保存
+    const resultLetters = [];
+    const lineSelectedDots = [[], [], []]; // 各ラインの選択ドットを保存
+    
+    // selectedBeatsからラインごとの選択状態を取得
+    Array.from(selectedBeats).forEach(beatKey => {
+        const parts = beatKey.split('-');
+        if (parts.length === 2) {
+            const lineIndex = parseInt(parts[0]);
+            const beatNumber = parseInt(parts[1]);
+            
+            // 有効なライン（0-2）のみを処理
+            if (lineIndex >= 0 && lineIndex <= 2) {
+                lineSelectedDots[lineIndex].push(beatNumber);
+            }
+        }
+    });
+    
+    // デバッグ情報
+    console.log("現在のselectedBeats:", Array.from(selectedBeats));
+    console.log("ライン別選択ドット:", lineSelectedDots);
+    
+    // 各ラインについてパターンマッチング
+    for (let lineIndex = 0; lineIndex < 3; lineIndex++) {
+        const selectedDots = lineSelectedDots[lineIndex];
+        
+        // 選択がなければスキップ
+        if (selectedDots.length === 0) continue;
+        
+        // 選択ドットを昇順にソート
+        const sortedDots = [...selectedDots].sort((a, b) => a - b);
+        console.log(`ライン ${lineIndex} のソート済み選択ドット:`, sortedDots);
+        
+        // パターンマッチング - 完全一致のみ
+        for (const pattern of patternMap) {
+            // パターンもソートして比較
+            const sortedPattern = [...pattern.dots].sort((a, b) => a - b);
+            
+            console.log(`パターンチェック: ${sortedDots} vs ${sortedPattern}`);
+            
+            // 完全一致の場合のみ結果に追加
+            if (sortedDots.length === sortedPattern.length &&
+                sortedDots.every((val, idx) => val === sortedPattern[idx])) {
+                
+                console.log(`ライン ${lineIndex} で完全一致: ${pattern.letter} (${pattern.dots})`);
+                resultLetters.push({
+                    line: lineIndex,
+                    letter: pattern.letter,
+                    dots: sortedDots.join(',')
+                });
+                break;
+            }
+        }
+    }
+    
+    // 結果ボックスを更新
+    updateResultBoxWithAlphabets(resultLetters);
 }
